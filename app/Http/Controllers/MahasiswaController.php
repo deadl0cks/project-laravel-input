@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 class MahasiswaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data_mahasiswa = \App\Models\Mahasiswa::all();
+        if ($request->has('cari')){
+            $data_mahasiswa = \App\Models\Mahasiswa::where('nim','LIKE','%'.$request->cari.'%')->get();
+        } else {
+            $data_mahasiswa = \App\Models\Mahasiswa::all();
+        }
         return view('mahasiswa.index', ['data_mahasiswa' => $data_mahasiswa]);
     }
 
@@ -16,5 +20,25 @@ class MahasiswaController extends Controller
     {
         \App\Models\Mahasiswa::create($request->all());
         return redirect('/mahasiswa')->with('Sukses', 'Data berhasil diinput');
+    }
+
+    public function edit($id)
+    {
+        $mahasiswa = \App\Models\Mahasiswa::find($id);
+        return view('mahasiswa/edit',['mahasiswa'=>$mahasiswa]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $mahasiswa = \App\Models\Mahasiswa::find($id);
+        $mahasiswa -> update($request->all());
+        return redirect('/mahasiswa')->with('Sukses', 'Data berhasil diupdate');
+    }
+
+    public function delete($id)
+    {
+        $mahasiswa = \App\Models\Mahasiswa::find($id);
+        $mahasiswa -> delete($mahasiswa);
+        return redirect('/mahasiswa')->with('Sukses', 'Data berhasil dihapus');
     }
 }

@@ -20,6 +20,9 @@ Route::get('/', function () {
 use App\Http\Controllers\MahasiswaController;
 
 Route::get('/mahasiswa',[MahasiswaController::class, 'index']);
-
 Route::post('/mahasiswa', [\App\Http\Controllers\MahasiswaController::class, 'create']);
+Route::get('/mahasiswa/{id}/edit', [MahasiswaController::class, 'edit']);
+Route::post('/mahasiswa/{id}/update', [\App\Http\Controllers\MahasiswaController::class, 'update']);
+Route::get('/mahasiswa/{id}/delete', [MahasiswaController::class, 'delete']);
+
 
